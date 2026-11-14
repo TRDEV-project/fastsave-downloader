@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" id="html-tag">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Download TikTok & Instagram Videos | FastSave</title>
+<meta name="description" content="Download public TikTok videos and Instagram Reels with FastSave instantly.">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+body.lang-ar{font-family:'Cairo',sans-serif}
+body.lang-en{font-family:'Plus Jakarta Sans',sans-serif}
+body{background-color:#0f172a;color:#f8fafc}
+.glass-card{
+    background:rgba(30,41,59,.7);
+    backdrop-filter:blur(12px);
+    border:1px solid rgba(255,255,255,.1)
+}
+button:disabled{cursor:not-allowed}
+</style>
+</head>
+
+<body class="min-h-screen flex flex-col justify-between lang-en">
+
+<header class="border-b border-slate-800 py-4 px-6">
+<div class="max-w-5xl mx-auto flex justify-between items-center">
+<div class="flex items-center gap-2">
+<div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-pink-500 to-cyan-400 flex items-center justify-center font-bold text-white text-xl">
+<i class="fa-solid fa-cloud-arrow-down"></i>
+</div>
+<span class="text-xl font-extrabold tracking-wide">
+FastSave<span class="text-cyan-400">.io</span>
+</span>
+</div>
+
+<button onclick="toggleLanguage()" class="bg-slate-800 text-white text-xs font-bold px-3 py-2 rounded-lg border border-slate-600 flex items-center gap-1.5">
+<i class="fa-solid fa-globe text-cyan-400"></i>
+<span id="lang-btn-text">العربية</span>
+</button>
+</div>
+</header>
+
+<main class="max-w-4xl mx-auto w-full px-4 py-10 flex-grow">
+
+<div class="text-center mb-8">
+<h1 id="hero-title" class="text-3xl md:text-5xl font-extrabold mb-3">
+Download Your Favorite Videos In One Click
+</h1>
+<p id="hero-subtitle" class="text-slate-400 text-sm md:text-base max-w-xl mx-auto">
+Paste a public TikTok or Instagram video link and download it instantly.
+</p>
+</div>
+
+<!-- Adsterra Top Ad Space -->
+<div class="w-full min-h-[90px] bg-slate-800/40 border border-dashed border-slate-700 rounded-xl flex items-center justify-center text-slate-500 text-xs mb-8">
+[ Top Ad Space ]
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+<div class="glass-card rounded-2xl p-6 shadow-xl">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-full bg-black flex items-center justify-center text-cyan-400">
+<i class="fa-brands fa-tiktok"></i>
+</div>
+<div>
+<h2 id="tik-title" class="text-lg font-bold">TikTok Downloader</h2>
+<p id="tik-sub" class="text-xs text-slate-400">Instant (MP4)</p>
+</div>
+</div>
+
+<input type="url" id="tiktok-url"
+placeholder="Paste TikTok video link here..."
+class="w-full bg-slate-900 border border-slate-700 rounded-xl py-3.5 px-4 text-sm text-white mb-4"
+dir="ltr">
+
+<button onclick="handleDownload('tiktok-url')"
+id="btn-tiktok"
+class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all duration-200 active:scale-95">
+<i class="fa-solid fa-download"></i>
+<span id="btn-tik-txt">Download TikTok Video</span>
+</button>
+</div>
+
+<div class="glass-card rounded-2xl p-6 shadow-xl">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-full bg-gradient-to-tr from-yellow-500 via-pink-500 to-purple-600 flex items-center justify-center text-white">
+<i class="fa-brands fa-instagram"></i>
+</div>
+<div>
+<h2 id="ins-title" class="text-lg font-bold">Instagram Downloader</h2>
+<p id="ins-sub" class="text-xs text-slate-400">Instant Reels</p>
+</div>
+</div>
+
+<input type="url" id="insta-url"
+placeholder="Paste Instagram video link here..."
+class="w-full bg-slate-900 border border-slate-700 rounded-xl py-3.5 px-4 text-sm text-white mb-4"
+dir="ltr">
+
+<button onclick="handleDownload('insta-url')"
+id="btn-insta"
+class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-3.5 rounded-xl flex items-center justify-center gap-2 transition-all duration-200 active:scale-95">
+<i class="fa-solid fa-download"></i>
+<span id="btn-ins-txt">Download Instagram Video</span>
+</button>
+</div>
+
+</div>
+
+<div id="result-box" class="hidden mt-8 glass-card rounded-2xl p-6 text-center">
+
+<div id="loading-spinner" class="py-4">
+<i class="fa-solid fa-circle-notch fa-spin text-3xl text-cyan-400 mb-3"></i>
+<p id="loading-text" class="text-sm text-slate-300">
+Processing video...
+</p>
+</div>
+
+<p id="download-error" class="hidden text-sm text-red-400 mt-3"></p>
+
+<div id="video-ready" class="hidden mt-4">
+<p id="ready-text" class="font-bold text-emerald-400 mb-3">
+Your video is ready and downloading!
+</p>
+<a id="direct-download-link" href="#" target="_blank"
+class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold px-6 py-3 rounded-xl inline-flex items-center gap-2 transition-all shadow-lg">
+<i class="fa-solid fa-cloud-arrow-down"></i>
+<span id="save-btn-txt">Download MP4 Again</span>
+</a>
+</div>
+
+</div>
+
+<!-- Adsterra Bottom Ad Space -->
+<div class="w-full min-h-[90px] bg-slate-800/40 border border-dashed border-slate-700 rounded-xl flex items-center justify-center text-slate-500 text-xs mt-8">
+[ Bottom Ad Space ]
+</div>
+
+<section class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+<div class="bg-slate-800/40 p-5 rounded-xl border border-slate-800">
+<i class="fa-solid fa-bolt text-cyan-400 text-2xl mb-2"></i>
+<h3 class="font-bold text-sm">Lightning Fast</h3>
+<p class="text-xs text-slate-400">Get videos quickly.</p>
+</div>
+<div class="bg-slate-800/40 p-5 rounded-xl border border-slate-800">
+<i class="fa-solid fa-video text-pink-400 text-2xl mb-2"></i>
+<h3 class="font-bold text-sm">HD Quality</h3>
+<p class="text-xs text-slate-400">Save clean videos without watermark.</p>
+</div>
+<div class="bg-slate-800/40 p-5 rounded-xl border border-slate-800">
+<i class="fa-solid fa-mobile-screen text-purple-400 text-2xl mb-2"></i>
+<h3 class="font-bold text-sm">All Devices</h3>
+<p class="text-xs text-slate-400">Works smoothly on mobile & PC.</p>
+</div>
+</section>
+
+</main>
+
+<footer class="border-t border-slate-800 py-6 text-center text-xs text-slate-500">
+<p>© 2026 FastSave - All rights reserved.</p>
+</footer>
+
+<script>
+let currentLang = "en";
+
+function toggleLanguage(){
+    currentLang = currentLang === "en" ? "ar" : "en";
+    document.documentElement.lang = currentLang;
+    document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
+
+    document.getElementById("lang-btn-text").textContent = currentLang === "ar" ? "English" : "العربية";
+
+    if(currentLang === "ar"){
+        document.getElementById("hero-title").textContent = "حمّل فيديوهاتك المفضلة بضغطة زر";
+        document.getElementById("hero-subtitle").textContent = "ألصق رابط فيديو عام من تيك توك أو ريلز انستغرام وحمّله فوراً.";
+        document.getElementById("tik-title").textContent = "تحميل من TikTok";
+        document.getElementById("tik-sub").textContent = "تحميل فوري (MP4)";
+        document.getElementById("tiktok-url").placeholder = "ألصق رابط فيديو تيك توك هنا...";
+        document.getElementById("btn-tik-txt").textContent = "تحميل فيديو تيك توك";
+
+        document.getElementById("ins-title").textContent = "تحميل من Instagram";
+        document.getElementById("ins-sub").textContent = "ريلز وفيديوهات فورية";
+        document.getElementById("insta-url").placeholder = "ألصق رابط انستغرام هنا...";
+        document.getElementById("btn-ins-txt").textContent = "تحميل فيديو انستغرام";
+
+        document.getElementById("loading-text").textContent = "جاري معالجة وتحميل الفيديو...";
+        document.getElementById("ready-text").textContent = "فيديوهاتك جاهزة وتم بدء التنزيل تلقائياً!";
+        document.getElementById("save-btn-txt").textContent = "تحميل MP4 مرة أخرى";
+    } else {
+        document.getElementById("hero-title").textContent = "Download Your Favorite Videos In One Click";
+        document.getElementById("hero-subtitle").textContent = "Paste a public TikTok or Instagram video link and download it instantly.";
+        document.getElementById("tik-title").textContent = "TikTok Downloader";
+        document.getElementById("tik-sub").textContent = "Instant (MP4)";
+        document.getElementById("tiktok-url").placeholder = "Paste TikTok video link here...";
+        document.getElementById("btn-tik-txt").textContent = "Download TikTok Video";
+
+        document.getElementById("ins-title").textContent = "Instagram Downloader";
+        document.getElementById("ins-sub").textContent = "Instant Reels";
+        document.getElementById("insta-url").placeholder = "Paste Instagram video link here...";
+        document.getElementById("btn-ins-txt").textContent = "Download Instagram Video";
+
+        document.getElementById("loading-text").textContent = "Processing video...";
+        document.getElementById("ready-text").textContent = "Your video is ready and downloading automatically!";
+        document.getElementById("save-btn-txt").textContent = "Download MP4 Again";
+    }
+}
+
+async function handleDownload(inputId){
+    const input = document.getElementById(inputId);
+    const url = input.value.trim();
+
+    if(!url){
+        alert(currentLang === "ar" ? "المرجو وضع رابط الفيديو أولاً!" : "Please paste a video link first.");
+        input.focus();
+        return;
+    }
+
+    const platform = inputId === "tiktok-url" ? "tiktok" : "instagram";
+    const button = document.getElementById(platform === "tiktok" ? "btn-tiktok" : "btn-insta");
+    const resultBox = document.getElementById("result-box");
+    const spinner = document.getElementById("loading-spinner");
+    const ready = document.getElementById("video-ready");
+    const errorBox = document.getElementById("download-error");
+
+    button.disabled = true;
+    button.classList.add("opacity-75");
+
+    resultBox.classList.remove("hidden");
+    spinner.classList.remove("hidden");
+    ready.classList.add("hidden");
+    errorBox.classList.add("hidden");
+
+    try {
+        const response = await fetch("/api/extract", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({platform, url})
+        });
+
+        if(!response.ok){
+            const errData = await response.json().catch(() => ({}));
+            throw new Error(errData.error || "Failed to download video.");
+        }
+
+        const blob = await response.blob();
+        const downloadUrl = URL.createObjectURL(blob);
+
+        spinner.classList.add("hidden");
+        ready.classList.remove("hidden");
+
+        const link = document.getElementById("direct-download-link");
+        link.href = downloadUrl;
+        link.download = platform + "-video.mp4";
+        
+        // Trigger download automatically
+        link.click();
+
+    } catch(err) {
+        spinner.classList.add("hidden");
+        errorBox.textContent = err.message || (currentLang === "ar" ? "وقع خطأ، تأكد من صحة الرابط." : "Something went wrong. Check the link.");
+        errorBox.classList.remove("hidden");
+    } finally {
+        button.disabled = false;
+        button.classList.remove("opacity-75");
+    }
+}
+</script>
+</body>
+</html>
